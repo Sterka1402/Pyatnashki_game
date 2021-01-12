@@ -13,7 +13,7 @@ class Tiles {
     <p>${this.name}</p>
     `;
     // tileCard.addEventListener('click', (e) => this.moveToEmpty(e));
-    
+
     tileCard.classList.add('tiles');
     container.append(tileCard);
   }
@@ -24,8 +24,6 @@ class Tiles {
   //     console.log('myau');
   //   }
   // }
-
 }
-
 
 export default Tiles;

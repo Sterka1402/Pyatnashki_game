@@ -1,5 +1,5 @@
-import Tiles from '../modules/tiles-class';
- import shuffle from '../modules/shuffle';
+import Tiles from './tiles-class';
+import shuffle from './shuffle';
 
 const renderTiles = (tiles, container) => {
   if (!container) return;
@@ -7,8 +7,8 @@ const renderTiles = (tiles, container) => {
   shuffle(tiles).forEach((tile) => {
     const tileCard = new Tiles(tile);
     tileCard.render(container);
-
   });
+  localStorage.setItem('tiles', JSON.stringify(tiles));
 };
 
 export default renderTiles;

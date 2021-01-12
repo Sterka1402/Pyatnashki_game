@@ -1,3 +1,3 @@
 import './modules/game';
 
-console.log("hello, world");
+console.log('JS is running');
