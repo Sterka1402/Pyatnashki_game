@@ -17,14 +17,28 @@ h1{
   font-size: 65px;
   color: rgb(238, 75, 11);
 }
+.game-field {
+  margin: 0 auto;
+  text-align: center;
+}
+button {
+  margin: 20px auto;
+  margin-right: 300px;
+  border: 3px solid rgb(238, 75, 11);
+  border-radius: 10px;
+  width: 100px;
+  cursor: pointer;
+} 
+
 p{
  font: bold 20px;
 }
 .container {
-  width:415px;
-  height: 415px;
-  margin: 150px auto;
-  border: 2px solid gray
+  width: 420px;
+  height: 420px;
+  margin: 50px auto;
+  border: 2px solid gray;
+  padding-left: 1px;
 }
 .box {
   display:grid;
@@ -41,6 +55,7 @@ p{
   display:flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 .empty-tile {
   width: 100px;

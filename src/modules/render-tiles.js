@@ -1,12 +1,10 @@
 import Tiles from '../modules/tiles-class';
-// import tiles from '../modules/tiles-data';
+ import shuffle from '../modules/shuffle';
 
 const renderTiles = (tiles, container) => {
-  console.log(tiles);
   if (!container) return;
   container.innerHTML = '';
-  tiles.forEach((tile) => {
-    
+  shuffle(tiles).forEach((tile) => {
     const tileCard = new Tiles(tile);
     tileCard.render(container);
 

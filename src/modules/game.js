@@ -6,10 +6,11 @@ import moveTile from './move-tile';
 
 window.addEventListener('load', () => {
   const gameContainer = document.querySelector('.box');
+  const btn = document.querySelector('.start-game');
   
-  renderTiles(tiles, gameContainer);
-  emptyTile(gameContainer);
+  
+  btn.addEventListener('click', (e) => renderTiles(tiles, gameContainer));
 
-  gameContainer.addEventListener('click', (e) => moveTile(e));
+  gameContainer.addEventListener('click', (e) => moveTile(e, tiles, gameContainer));
 });
 
