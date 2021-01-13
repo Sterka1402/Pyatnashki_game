@@ -9,15 +9,17 @@ body{
   font-family: 'Courier New', Courier, monospace;
   font-size: 22px;
   background-color:lightblue;
+  
 }
 h1{
   margin: auto;
-  margin-top: 200px;
+  margin-top: 50px;
   text-align: center;
   font-size: 65px;
   color: rgb(238, 75, 11);
 }
-.game-field {
+
+.game-begin {
   margin: 0 auto;
   text-align: center;
 }
@@ -29,9 +31,8 @@ button {
   width: 100px;
   cursor: pointer;
 } 
-
 p{
- font: bold 20px;
+ font-weight: bold ;
 }
 .container {
   width: 420px;
@@ -39,8 +40,6 @@ p{
   margin: 50px auto;
   border: 2px solid gray;
   padding-left: 1px;
-}
-.box {
   display:grid;
   grid-template-columns: 100px 100px 100px 100px;
   row-gap: 5px;
