@@ -28,16 +28,18 @@ class Game {
 
     this.container.classList.add('container');
     gameContainer.append(startGame, this.container);
-    const saveGame = JSON.parse(localStorage.getItem('tiles'));
-    
-    if (saveGame === null) {
-      this.renderTiles(this.tilesWin);
-    } else {
-      this.tiles = saveGame;
-      this.renderTiles(this.tiles);
-      
-    }
+    // const saveGame = JSON.parse(localStorage.getItem('tiles'));
+    // console.log(saveGame);
 
+    // if (saveGame == ' ') {
+
+    // } else {
+
+    //   // this.tiles = saveGame;
+    //   // this.renderTiles(this.tiles);
+
+    // }
+    this.renderTiles(this.tilesWin);
     startGame.addEventListener('click', this.beginGame);
   }
 
@@ -65,10 +67,10 @@ class Game {
     });
 
     this.container.addEventListener('click', this.moveToEmpty);
-    // localStorage.setItem('tiles', JSON.stringify(this.tiles));
+    localStorage.setItem('tiles', JSON.stringify(this.tiles));
   }
 
-  async moveToEmpty(e) {
+  moveToEmpty(e) {
     const moveKey = e.target.closest('DIV');
 
     const tileToMove = this.tiles.findIndex((item) => item === Number(moveKey.dataset.key));
@@ -94,13 +96,15 @@ class Game {
       this.tiles[tileToMove] = bingo;
     }
 
-    try {
-      await localStorage.setItem('tiles', JSON.stringify(this.tiles));
-      await this.renderTiles(this.tiles);
-      await this.checkTheEndOfGame();
-    } catch (err) {
-      console.log(new Error('Sorry for inconvenience. Something went wrong'));
-    }
+    // try {
+    //   await localStorage.setItem('tiles', JSON.stringify(this.tiles));
+    //   await this.renderTiles(this.tiles);
+    //   await this.checkTheEndOfGame();
+    // } catch (err) {
+    //   console.log(new Error('Sorry for inconvenience. Something went wrong'));
+    // }
+    this.renderTiles(this.tiles);
+    this.checkTheEndOfGame();
   }
 
   checkTheEndOfGame() {
