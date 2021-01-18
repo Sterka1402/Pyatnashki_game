@@ -28,12 +28,14 @@ class Game {
 
     this.container.classList.add('container');
     gameContainer.append(startGame, this.container);
-
-    if (JSON.parse(localStorage.getItem('tiles'))) {
-      this.tiles = JSON.parse(localStorage.getItem('tiles'));
-      this.renderTiles(this.tiles);
-    } else {
+    const saveGame = JSON.parse(localStorage.getItem('tiles'));
+    
+    if (saveGame === null) {
       this.renderTiles(this.tilesWin);
+    } else {
+      this.tiles = saveGame;
+      this.renderTiles(this.tiles);
+      
     }
 
     startGame.addEventListener('click', this.beginGame);
@@ -63,7 +65,7 @@ class Game {
     });
 
     this.container.addEventListener('click', this.moveToEmpty);
-    localStorage.setItem('tiles', JSON.stringify(this.tiles));
+    // localStorage.setItem('tiles', JSON.stringify(this.tiles));
   }
 
   async moveToEmpty(e) {
