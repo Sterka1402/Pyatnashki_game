@@ -9,8 +9,7 @@ class Tile {
     <p>${this.name}</p>
     `;
     tileCard.classList.add('tiles');
-    tileCard.setAttribute('data-key',`${this.name}`);
-    
+    tileCard.setAttribute('data-key', `${this.name}`);
 
     if (this.name === '') {
       tileCard.classList.add('empty');
