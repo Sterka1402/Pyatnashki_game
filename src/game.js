@@ -16,6 +16,7 @@ class Game {
     this.renderTiles = this.renderTiles.bind(this);
     this.beginGame = this.beginGame.bind(this);
     this.shuffle = this.shuffle.bind(this);
+    this.moveToEmpty = this.moveToEmpty.bind(this);
   }
   init() {
     
@@ -28,6 +29,7 @@ class Game {
     gameContainer.append(startGame, this.container);
     this.renderTiles(this.tilesWin);
     startGame.addEventListener('click', this.beginGame);
+
 
 
   }
@@ -55,7 +57,7 @@ class Game {
            
     });
 
-    this.container.addEventListener('click', (e) => this.moveToEmpty(e));
+    this.container.addEventListener('click',this.moveToEmpty);
     
     localStorage.setItem('tiles', JSON.stringify(this.tiles));
   }
@@ -66,14 +68,14 @@ class Game {
     const tileToMove = this.tiles.findIndex(item  => item === Number(moveKey.dataset.key));
         
     console.log(`before move ${this.tiles}`); 
-    console.log(this.tiles[tileToMove]);
+    console.log(tileToMove);
 
-    if ((this.tiles[tileToMove - 1] === '') && (tileToMove % 4 !== 0)) {
+    if ((this.tiles[tileToMove - 1] === '') && (tileToMove  % 4 !== 0)) {
        const bingo = this.tiles[tileToMove - 1];
        this.tiles[tileToMove - 1] = this.tiles[tileToMove];
        this.tiles[tileToMove] = bingo;
     };
-    if ((this.tiles[tileToMove + 1] === '') && (tileToMove % 4 !== 0)) {
+    if ((this.tiles[tileToMove + 1] === '') && ((tileToMove + 1) % 4 !== 0)) {
       const bingo = this.tiles[tileToMove + 1];
       this.tiles[tileToMove + 1] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
@@ -89,7 +91,7 @@ class Game {
       this.tiles[tileToMove] = bingo;
     }; 
     
-    // this.renderTiles(this.tiles);
+     this.renderTiles(this.tiles);
     console.log(`after move ${this.tiles}`);  
     // localStorage.setItem('tiles', JSON.stringify(this.tiles));
     
