@@ -39,11 +39,17 @@ p{
   height: 420px;
   margin: 50px auto;
   border: 2px solid gray;
+  background-color:  rgba(238, 75, 11, 0.8);
   padding-left: 1px;
   display:grid;
   grid-template-columns: 100px 100px 100px 100px;
   row-gap: 5px;
   column-gap: 5px;
+  
+  transition: all 2s ease-in-out;
+  -webkit-transition: all 2s ease-in-out; /** Chrome & Safari **/
+  -moz-transition: all 2s ease-in-out; /** Firefox **/
+  -o-transition: all 2s ease-in-out; /** Opera **/
   
 }
 .tiles {
@@ -51,15 +57,17 @@ p{
   height: 100px;
   margin: 0 auto;
   border: 1px solid gray;
+  background-color:  gray;
   display:flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: 5.5s;
+
 }
 
 .empty {
-  border: 1px solid rgb(238, 75, 11);
+  background-color:  rgba(238, 75, 11, 0.5);
+  border: none;
 }
 
 
