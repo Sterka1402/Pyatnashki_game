@@ -5,9 +5,7 @@ class Tile {
 
   render(container) {
     const tileCard = document.createElement('div');
-    tileCard.innerHTML = `
-    <p>${this.name}</p>
-    `;
+    tileCard.innerHTML = `${this.name}`;
     tileCard.classList.add('tiles');
     tileCard.setAttribute('data-key', `${this.name}`);
 
