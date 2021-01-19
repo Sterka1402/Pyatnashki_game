@@ -4,7 +4,7 @@ class Game {
   constructor(size) {
     const tilesWin = [];
     this.tilesWin = tilesWin;
-    this.length = size * size;
+    this.length = size * size ;
    
     this.bindMethods();
   
@@ -13,7 +13,7 @@ class Game {
     for (let i = 0; i < this.length - 1; i++) {
       this.tilesWin[i] = i + 1;
     }
-    this.tilesWin[this.length - 1] = '';
+    // this.tilesWin[this.length - 1] = '';
 
   }
 
@@ -44,31 +44,40 @@ class Game {
     //   // this.tiles = saveGame;
     //   // this.renderTiles(this.tiles);
     // }
-    this.getWinnerTiles();
+
+    // this.tiles.length = 0;
+    this.getWinnerTiles();    
     this.tiles = [...this.tilesWin];
-    this.renderTiles(this.tiles);
+    // console.log(this.tilesWin);
+    // console.log(this.tiles);
+    this.renderTiles();
     startGame.addEventListener('click', this.beginGame);
   }
 
   beginGame() {
-    // this.tiles = [...this.tilesWin];
+    this.getWinnerTiles();
+    this.tiles = [...this.tilesWin];
+    console.log(this.tilesWin);
+    // console.log(this.tiles);
     this.shuffle();
-    this.renderTiles(this.tiles);
+    this.renderTiles();
   }
 
   shuffle() {
-    for (let i = this.length - 1; i > 0; i--) {
+    for (let i = this.length - 2; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       const temp = this.tiles[j];
       this.tiles[j] = this.tiles[i];
       this.tiles[i] = temp;
     }
+    this.tiles[this.length - 1] = '';
+    // console.log(this.tiles);
     return this.tiles;
   }
 
-  renderTiles(arr) {
+  renderTiles() {
     this.container.innerHTML = '';
-    arr.forEach((tile) => {
+    this.tiles.forEach((tile) => {
       const tileCard = new Tile(tile);
       tileCard.render(this.container);
     });
@@ -78,9 +87,10 @@ class Game {
   }
 
   moveToEmpty(e) {
-    const moveKey = e.target;
-    if (moveKey.classList.contains('empty')) return;
-    const tileToMove = this.tiles.findIndex((item) => item === Number(moveKey.dataset.key));
+    if (this.tiles.length !== this.length) return;
+    const tileClicked = e.target;
+    if (tileClicked.classList.contains('empty')) return;
+    const tileToMove = this.tiles.findIndex((item) => item === Number(tileClicked.dataset.key));
 
     if ((this.tiles[tileToMove - 1] === '') && (tileToMove % 4 !== 0)) {
       const bingo = this.tiles[tileToMove - 1];
@@ -108,8 +118,11 @@ class Game {
   }
 
   checkTheEndOfGame() {
-    if (JSON.stringify(this.tiles) === JSON.stringify(this.tilesWin)) {
-      alert('You Win!');
+    const tilesEmptyRemove = [...this.tiles];
+    tilesEmptyRemove.splice(this.tiles.length - 1, 1);
+    if (this.tiles.length !== this.length ) return;
+    if (JSON.stringify(tilesEmptyRemove) === JSON.stringify(this.tilesWin)) {
+       alert('You Win!');
     }
   }
 }
