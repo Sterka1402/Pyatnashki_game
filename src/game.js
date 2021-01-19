@@ -45,12 +45,13 @@ class Game {
     //   // this.renderTiles(this.tiles);
     // }
     this.getWinnerTiles();
-    this.renderTiles(this.tilesWin);
+    this.tiles = [...this.tilesWin];
+    this.renderTiles(this.tiles);
     startGame.addEventListener('click', this.beginGame);
   }
 
   beginGame() {
-    this.tiles = [...this.tilesWin];
+    // this.tiles = [...this.tilesWin];
     this.shuffle();
     this.renderTiles(this.tiles);
   }
@@ -78,6 +79,7 @@ class Game {
 
   moveToEmpty(e) {
     const moveKey = e.target;
+    if (moveKey.classList.contains('empty')) return;
     const tileToMove = this.tiles.findIndex((item) => item === Number(moveKey.dataset.key));
 
     if ((this.tiles[tileToMove - 1] === '') && (tileToMove % 4 !== 0)) {
