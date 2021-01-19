@@ -1,7 +1,7 @@
 import Game from './game';
 
 window.addEventListener('load', () => {
-  const default_size = 4;
-  const game = new Game(default_size);
+  const defaultSize = 4;
+  const game = new Game(defaultSize);
   game.init();
 });

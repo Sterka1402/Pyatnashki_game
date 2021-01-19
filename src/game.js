@@ -4,22 +4,19 @@ class Game {
   constructor(size) {
     const tilesWin = [];
     this.tilesWin = tilesWin;
-    this.length = size * size ;
-   
+    this.length = size * size;
+
     this.bindMethods();
-  
   }
+
   getWinnerTiles() {
     for (let i = 0; i < this.length - 1; i++) {
       this.tilesWin[i] = i + 1;
     }
     // this.tilesWin[this.length - 1] = '';
-
   }
 
-
   bindMethods() {
-   
     this.container = document.createElement('DIV');
     this.getWinnerTiles = this.getWinnerTiles.bind(this);
     this.renderTiles = this.renderTiles.bind(this);
@@ -46,7 +43,7 @@ class Game {
     // }
 
     // this.tiles.length = 0;
-    this.getWinnerTiles();    
+    this.getWinnerTiles();
     this.tiles = [...this.tilesWin];
     // console.log(this.tilesWin);
     // console.log(this.tiles);
@@ -112,7 +109,7 @@ class Game {
       this.tiles[tileToMove + 4] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
     }
-    
+
     this.checkTheEndOfGame();
     this.renderTiles(this.tiles);
   }
@@ -120,9 +117,9 @@ class Game {
   checkTheEndOfGame() {
     const tilesEmptyRemove = [...this.tiles];
     tilesEmptyRemove.splice(this.tiles.length - 1, 1);
-    if (this.tiles.length !== this.length ) return;
+    if (this.tiles.length !== this.length) return;
     if (JSON.stringify(tilesEmptyRemove) === JSON.stringify(this.tilesWin)) {
-       alert('You Win!');
+      alert('You Win!');
     }
   }
 }
