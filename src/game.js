@@ -11,6 +11,7 @@ class Game {
   }
 
   bindMethods() {
+    this.init = this.init.bind(this);
     this.getWinnerTiles = this.getWinnerTiles.bind(this);
     this.renderTiles = this.renderTiles.bind(this);
     this.beginGame = this.beginGame.bind(this);
@@ -35,7 +36,7 @@ class Game {
     this.container.classList.add('container');
     gameContainer.append(startGameBtn, this.container);
     // const saveGame = JSON.parse(localStorage.getItem('tiles'));
-    // console.log(saveGame);
+    // 
     // if (saveGame == ' ') {
     // } else {
     //   // this.tiles = saveGame;
@@ -43,6 +44,7 @@ class Game {
     // }
 
     // this.tiles.length = 0;
+    console.log(this.tilesWin);
     this.getWinnerTiles();
     this.tiles = [...this.tilesWin];
     // console.log(this.tilesWin);
@@ -52,9 +54,9 @@ class Game {
   }
 
   beginGame() {
-    this.getWinnerTiles();
+    // this.getWinnerTiles();
     this.tiles = [...this.tilesWin];
-    console.log(this.tilesWin);
+    console.log(this.tiles);
     // console.log(this.tiles);
     this.shuffle();
     this.renderTiles();
@@ -84,6 +86,7 @@ class Game {
   }
 
   moveToEmpty(e) {
+    
     if (this.tiles.length !== this.length) return;
     const tileClicked = e.target;
     if (tileClicked.classList.contains('empty')) return;
@@ -109,9 +112,9 @@ class Game {
       this.tiles[tileToMove + this.size] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
     }
-
-    this.checkTheEndOfGame();
+   
     this.renderTiles(this.tiles);
+    this.checkTheEndOfGame();
   }
 
   checkTheEndOfGame() {
@@ -120,7 +123,7 @@ class Game {
     if (this.tiles.length !== this.length) return;
     if (JSON.stringify(tilesEmptyRemove) === JSON.stringify(this.tilesWin)) {
       this.gameWon = true;
-      alert('You Win!');
+       alert('You Win!');
     }
   }
 }
