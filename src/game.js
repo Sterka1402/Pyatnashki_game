@@ -26,15 +26,37 @@ class Game {
     }
   }
 
+  createButtons() {
+
+  }
+
   init() {
-    const gameContainer = document.querySelector('.game-begin');
-    const startGameBtn = document.createElement('BUTTON');
-    startGameBtn.innerHTML = 'Start new Game';
-    startGameBtn.classList.add('start-game');
+    this.gameContainer = document.querySelector('.game-begin');
+    this.startGameBtn = document.createElement('BUTTON');
+    this.startGameBtn.innerHTML = 'Start new Game';
+    this.startGameBtn.classList.add('start-game');
+
+    this.sizeGame = document.createElement('SELECT');
+    this.sizeGame.innerHTML = `
+      <option value = '3' > 3 x 3 </option>   
+      <option value = '4' selected > 4 x 4 </option>
+      <option value = '5' > 5 x 5 </option>  
+    `;
+    this.sizeGame.classList.add('select-size');
+  //   <form  action="#" method="POST" autocomplete="off">
+  //   <select name="petsForm" class="petsForm" > 
+  //     <option value='0' selected disabled>Sort by</option>
+  //     <option value='ASC'>Sort by name from A to Z</option>
+  //     <option value='DESC'>Sort by name from Z to A</option>
+  //   </select>
+  // </form>
 
     this.container = document.createElement('DIV');
     this.container.classList.add('container');
-    gameContainer.append(startGameBtn, this.container);
+    this.gameContainer.append(this.startGameBtn, this.sizeGame, this.container);
+
+
+    
     // const saveGame = JSON.parse(localStorage.getItem('tiles'));
     //
     // if (saveGame == ' ') {
@@ -49,7 +71,7 @@ class Game {
     this.tiles = [...this.tilesWin];
 
     this.renderTiles();
-    startGameBtn.addEventListener('click', this.beginGame);
+    this.startGameBtn.addEventListener('click', this.beginGame);
   }
 
   beginGame() {
