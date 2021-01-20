@@ -4,7 +4,7 @@ class Game {
   constructor(size) {
     this.tilesWin = [];
     this.size = size;
-    this.length = size * size;
+    this.boardSize = size * size;
     this.gameWon = false;
 
     this.bindMethods();
@@ -21,7 +21,7 @@ class Game {
   }
 
   getWinnerTiles() {
-    for (let i = 1; i < this.length; i++) {
+    for (let i = 1; i < this.boardSize; i++) {
       this.tilesWin.push(i);
     }
   }
@@ -36,7 +36,7 @@ class Game {
     this.container.classList.add('container');
     gameContainer.append(startGameBtn, this.container);
     // const saveGame = JSON.parse(localStorage.getItem('tiles'));
-    // 
+    //
     // if (saveGame == ' ') {
     // } else {
     //   // this.tiles = saveGame;
@@ -44,33 +44,28 @@ class Game {
     // }
 
     // this.tiles.length = 0;
-    console.log(this.tilesWin);
+
     this.getWinnerTiles();
     this.tiles = [...this.tilesWin];
-    // console.log(this.tilesWin);
-    // console.log(this.tiles);
+
     this.renderTiles();
     startGameBtn.addEventListener('click', this.beginGame);
   }
 
   beginGame() {
-    // this.getWinnerTiles();
     this.tiles = [...this.tilesWin];
-    console.log(this.tiles);
-    // console.log(this.tiles);
     this.shuffle();
     this.renderTiles();
   }
 
   shuffle() {
-    for (let i = this.length - 2; i > 0; i--) {
+    for (let i = this.boardSize - 2; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       const temp = this.tiles[j];
       this.tiles[j] = this.tiles[i];
       this.tiles[i] = temp;
     }
-    this.tiles[this.length - 1] = '';
-    // console.log(this.tiles);
+    this.tiles[this.boardSize - 1] = '';
     return this.tiles;
   }
 
@@ -86,8 +81,7 @@ class Game {
   }
 
   moveToEmpty(e) {
-    
-    if (this.tiles.length !== this.length) return;
+    if (this.tiles.length !== this.boardSize) return;
     const tileClicked = e.target;
     if (tileClicked.classList.contains('empty')) return;
     const tileToMove = this.tiles.findIndex((item) => item === Number(tileClicked.dataset.key));
@@ -112,18 +106,18 @@ class Game {
       this.tiles[tileToMove + this.size] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
     }
-   
+
     this.renderTiles(this.tiles);
     this.checkTheEndOfGame();
   }
 
   checkTheEndOfGame() {
     const tilesEmptyRemove = [...this.tiles];
-    tilesEmptyRemove.splice(this.tiles.length - 1, 1);
-    if (this.tiles.length !== this.length) return;
+    tilesEmptyRemove.pop();
+    if (this.tiles.length !== this.boardSize) return;
     if (JSON.stringify(tilesEmptyRemove) === JSON.stringify(this.tilesWin)) {
       this.gameWon = true;
-       alert('You Win!');
+      setTimeout(() => alert('You Win!'), 5);
     }
   }
 }
