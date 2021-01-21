@@ -89,8 +89,8 @@ option {
   cursor: pointer;
 }
 .before-start{
-  background-color: rgba(41, 39, 39, 0.5);
-  cursor: none;
+  background-color:  rgba(238, 75, 11, 0.3);
+  cursor: initial;
 }
 .tiles {
   font-weight: bold ;

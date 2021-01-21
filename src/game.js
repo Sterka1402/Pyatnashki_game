@@ -3,9 +3,7 @@ import Tile from './tiles';
 class Game {
   constructor() {
     this.tilesWin = [];
-    this.size = 5;
-    this.boardSizeClass = 'board-size-5';
-    this.boardSize = this.size * this.size;
+    
     this.gameWon = false;
 
     this.bindMethods();
@@ -37,8 +35,9 @@ class Game {
 
     this.selectSizeGame = document.createElement('SELECT');
     this.selectSizeGame.innerHTML = `
+      <option disabled selected>Choose size </option>
       <option value = '3' > 3 x 3 </option>   
-      <option value = '4' selected > 4 x 4 </option>
+      <option value = '4' > 4 x 4 </option>
       <option value = '5' > 5 x 5 </option>  
     `;
     this.selectSizeGame.classList.add('select-size');
@@ -58,21 +57,27 @@ class Game {
       this.size = 5;
       this.boardSizeClass = 'board-size-5';
     }    
+    // console.log(this.size);
+    return this.size;
   }
 
   init() {
     this.createButtons();
-    this.container = document.createElement('DIV');
-    this.container.classList.add(`${this.boardSizeClass}`, 'before-start');
-    this.gameContainer.append(this.startGameBtn, this.selectSizeGame, this.container);
+    this.boardSizeClass = 'board-size-3';
+    this.boardGame = document.createElement('DIV');
+    this.boardGame.classList.add(`${this.boardSizeClass}`, 'before-start');
+    this.gameContainer.append(this.startGameBtn, this.selectSizeGame, this.boardGame);
 
-    // console.log(this.size);
-    this.selectSizeGame.addEventListener('change', this.getSizeGame);
+    
+    this.size = this.selectSizeGame.addEventListener('change', this.getSizeGame) || 3;
     console.log(this.size);
     // this.size = (a) ? a : 4;
+    // this.size;
+    
 
+    this.boardSize = this.size * this.size;
+    console.log(this.boardSize);
     this.getWinnerTiles();
-
     this.tiles = [...this.tilesWin];
 
     this.renderTiles();
@@ -81,7 +86,8 @@ class Game {
   }
 
   beginGame() {
-    this.container.classList.remove('before-start');
+    this.gameWon = false;
+    this.boardGame.classList.remove('before-start');
     this.tiles = [...this.tilesWin];
     this.shuffle();
     this.renderTiles();
@@ -99,17 +105,18 @@ class Game {
   }
 
   renderTiles() {
-    this.container.innerHTML = '';
+    this.boardGame.innerHTML = '';
     this.tiles.forEach((tile) => {
       const tileCard = new Tile(tile);
-      tileCard.render(this.container);
+      tileCard.render(this.boardGame);
     });
 
-    this.container.addEventListener('click', this.moveToEmpty);
+    this.boardGame.addEventListener('click', this.moveToEmpty);
     localStorage.setItem('tiles', JSON.stringify(this.tiles));
   }
 
   moveToEmpty(e) {
+    if ( this.gameWon === true) return;
     if (this.tiles.length !== this.boardSize) return;
     const tileClicked = e.target;
     if (tileClicked.classList.contains('empty')) return;
@@ -143,10 +150,12 @@ class Game {
   checkTheEndOfGame() {
     const tilesEmptyRemove = [...this.tiles];
     tilesEmptyRemove.pop();
+    if ( this.gameWon === true) return; 
     if (this.tiles.length !== this.boardSize) return;
     if (JSON.stringify(tilesEmptyRemove) === JSON.stringify(this.tilesWin)) {
       this.gameWon = true;
-      setTimeout(() => alert('You Win!'), 5);
+      this.boardGame.classList.add('before-start');
+      setTimeout(() => alert('You Win!'), 0);
     }
   }
 }
