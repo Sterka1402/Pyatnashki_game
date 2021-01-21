@@ -1,10 +1,10 @@
 import Tile from './tiles';
 
 class Game {
-  constructor(size) {
+  constructor() {
     this.tilesWin = [];
-    this.size = size;
-    this.boardSize = size * size;
+    this.size = 4;
+    this.boardSize = this.size * this.size;
     this.gameWon = false;
 
     this.bindMethods();
@@ -12,12 +12,14 @@ class Game {
 
   bindMethods() {
     this.init = this.init.bind(this);
+    this.createButtons = this.createButtons.bind(this);
     this.getWinnerTiles = this.getWinnerTiles.bind(this);
     this.renderTiles = this.renderTiles.bind(this);
     this.beginGame = this.beginGame.bind(this);
     this.shuffle = this.shuffle.bind(this);
     this.moveToEmpty = this.moveToEmpty.bind(this);
     this.checkTheEndOfGame = this.checkTheEndOfGame.bind(this);
+    this.getSizeGame = this.getSizeGame.bind(this);
   }
 
   getWinnerTiles() {
@@ -27,54 +29,60 @@ class Game {
   }
 
   createButtons() {
-
-  }
-
-  init() {
     this.gameContainer = document.querySelector('.game-begin');
     this.startGameBtn = document.createElement('BUTTON');
     this.startGameBtn.innerHTML = 'Start new Game';
     this.startGameBtn.classList.add('start-game');
 
-    this.sizeGame = document.createElement('SELECT');
-    this.sizeGame.innerHTML = `
+    this.selectSizeGame = document.createElement('SELECT');
+    this.selectSizeGame.innerHTML = `
       <option value = '3' > 3 x 3 </option>   
       <option value = '4' selected > 4 x 4 </option>
       <option value = '5' > 5 x 5 </option>  
     `;
-    this.sizeGame.classList.add('select-size');
-  //   <form  action="#" method="POST" autocomplete="off">
-  //   <select name="petsForm" class="petsForm" > 
-  //     <option value='0' selected disabled>Sort by</option>
-  //     <option value='ASC'>Sort by name from A to Z</option>
-  //     <option value='DESC'>Sort by name from Z to A</option>
-  //   </select>
-  // </form>
+    this.selectSizeGame.classList.add('select-size');
+  }
+
+  getSizeGame(e) {
+    // this.size = 4;
+    const { value } = e.target;
+
+    if (value === '3') {
+      this.size = 3;
+      // console.log(this.size);
+      // return this.size
+    }
+    if (value === '5') {
+      this.size = 5;
+      // return this.size;
+    }
+
+    return this.size;
+  }
+
+  init() {
+    this.createButtons();
 
     this.container = document.createElement('DIV');
-    this.container.classList.add('container');
-    this.gameContainer.append(this.startGameBtn, this.sizeGame, this.container);
+    this.container.classList.add('container', 'before-start');
+    this.gameContainer.append(this.startGameBtn, this.selectSizeGame, this.container);
 
-
-    
-    // const saveGame = JSON.parse(localStorage.getItem('tiles'));
-    //
-    // if (saveGame == ' ') {
-    // } else {
-    //   // this.tiles = saveGame;
-    //   // this.renderTiles(this.tiles);
-    // }
-
-    // this.tiles.length = 0;
+    // console.log(this.size);
+    this.selectSizeGame.addEventListener('change', this.getSizeGame);
+    console.log(this.size);
+    // this.size = (a) ? a : 4;
 
     this.getWinnerTiles();
+
     this.tiles = [...this.tilesWin];
 
     this.renderTiles();
+
     this.startGameBtn.addEventListener('click', this.beginGame);
   }
 
   beginGame() {
+    this.container.classList.remove('before-start');
     this.tiles = [...this.tilesWin];
     this.shuffle();
     this.renderTiles();

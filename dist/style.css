@@ -60,12 +60,14 @@ option {
   grid-template-columns: 100px 100px 100px 100px;
   row-gap: 5px;
   column-gap: 5px;
+  cursor: pointer;
   
-  transition: all 0.2s ease-in-out;
-  -webkit-transition: all 2s ease-in-out; /** Chrome & Safari **/
-  -moz-transition: all 2s ease-in-out; /** Firefox **/
-  -o-transition: all 2s ease-in-out; /** Opera **/
   
+  
+}
+.before-start{
+  background-color: rgba(41, 39, 39, 0.5);
+  cursor: none;
 }
 .tiles {
   font-weight: bold ;
@@ -77,8 +79,7 @@ option {
   display:flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-
+ 
 }
 
 .empty {
