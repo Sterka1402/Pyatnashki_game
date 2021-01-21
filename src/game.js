@@ -3,7 +3,8 @@ import Tile from './tiles';
 class Game {
   constructor() {
     this.tilesWin = [];
-    this.size = 4;
+    this.size = 5;
+    this.boardSizeClass = 'board-size-5';
     this.boardSize = this.size * this.size;
     this.gameWon = false;
 
@@ -44,27 +45,25 @@ class Game {
   }
 
   getSizeGame(e) {
-    // this.size = 4;
     const { value } = e.target;
-
     if (value === '3') {
       this.size = 3;
-      // console.log(this.size);
-      // return this.size
+      this.boardSizeClass = 'board-size-3';
+    }
+    if (value === '4') {
+      this.size = 4;
+      this.boardSizeClass = 'board-size-4';
     }
     if (value === '5') {
       this.size = 5;
-      // return this.size;
-    }
-
-    return this.size;
+      this.boardSizeClass = 'board-size-5';
+    }    
   }
 
   init() {
     this.createButtons();
-
     this.container = document.createElement('DIV');
-    this.container.classList.add('container', 'before-start');
+    this.container.classList.add(`${this.boardSizeClass}`, 'before-start');
     this.gameContainer.append(this.startGameBtn, this.selectSizeGame, this.container);
 
     // console.log(this.size);
