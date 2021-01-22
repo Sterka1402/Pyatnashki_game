@@ -5,20 +5,25 @@ class Game {
     this.tilesWin = [];
     this.size = 4;
     this.gameWon = false;
+    this.countMove = 0;
 
     this.bindMethods();
   }
 
   bindMethods() {
+    this.checkSaveGame = this.checkSaveGame.bind(this);
     this.createButtons = this.createButtons.bind(this);
+    this.getSizeGame = this.getSizeGame.bind(this);
     this.renderBoard = this.renderBoard.bind(this);
     this.getWinnerTiles = this.getWinnerTiles.bind(this);
-    this.renderTiles = this.renderTiles.bind(this);
+    this.restoreSaveGame = this.restoreSaveGame.bind(this)
     this.beginGame = this.beginGame.bind(this);
     this.shuffle = this.shuffle.bind(this);
+    this.renderTiles = this.renderTiles.bind(this);
     this.moveToEmpty = this.moveToEmpty.bind(this);
+    this.saveGame = this.saveGame.bind(this);
     this.checkTheEndOfGame = this.checkTheEndOfGame.bind(this);
-    this.getSizeGame = this.getSizeGame.bind(this);
+  
   }
 
   getWinnerTiles() {
@@ -28,10 +33,9 @@ class Game {
   }
 
   createButtons() {
-   
     this.startGameBtn = document.createElement('BUTTON');
     this.startGameBtn.innerHTML = 'Start new Game';
-    this.startGameBtn.classList.add('start-game');
+    this.startGameBtn.classList.add('button');
 
     this.selectSizeGame = document.createElement('SELECT');
     this.selectSizeGame.innerHTML = `
@@ -40,7 +44,15 @@ class Game {
       <option value = '4' > 4 x 4 </option>
       <option value = '5' > 5 x 5 </option>  
     `;
-    this.selectSizeGame.classList.add('select-size');
+    this.selectSizeGame.classList.add('button');
+
+    this.saveGameBtn = document.createElement('BUTTON');
+    this.saveGameBtn.innerHTML = 'Save game';
+    this.saveGameBtn.classList.add('button', 'hide');
+
+    this.restoreGameBtn = document.createElement('BUTTON');
+    this.restoreGameBtn.innerHTML = 'Restore game';
+    this.restoreGameBtn.classList.add('button', 'hide');
   }
 
   getSizeGame(e) {
@@ -54,7 +66,7 @@ class Game {
     this.boardSizeClass = `board, size${this.size}`;
     this.boardGame = document.createElement('DIV');
     this.boardGame.classList.add('board',`size${this.size}`, 'before-start');
-    this.gameContainer.append(this.startGameBtn, this.selectSizeGame, this.boardGame);
+    this.gameContainer.append(this.startGameBtn, this.selectSizeGame, this.saveGameBtn, this.restoreGameBtn, this.boardGame);
     this.selectSizeGame.addEventListener('change', this.getSizeGame);
 
     this.boardSize = Math.pow(this.size, 2);
@@ -62,34 +74,39 @@ class Game {
     this.getWinnerTiles();
     
     this.tiles = [...this.tilesWin];
-
     this.renderTiles();
 
     this.startGameBtn.addEventListener('click', this.beginGame);
+    this.restoreGameBtn.addEventListener('click', this.restoreSaveGame);
+  }
 
+  checkSaveGame() {
+    if (JSON.parse(localStorage.getItem('tiles'))) {
+      this.restoreGameBtn.classList.remove('hide');  
+    }
+
+  }
+
+  restoreSaveGame() {
+    this.tiles = JSON.parse(localStorage.getItem('tiles'));
+    this.boardGame.classList.remove('before-start');
+    this.size = Math.sqrt(this.tiles.length);    
+    console.log(Math.sqrt(this.tiles.length));
+    this.renderBoard();
+    this.renderTiles();
   }
 
   init() {
     this.gameContainer = document.querySelector('.game-begin');
     this.createButtons();
+    this.checkSaveGame();
     this.renderBoard();
-    
-    console.log(this.size);
-    
-    // this.boardSize = Math.pow(this.size, 2);
-    // this.tilesWin = [];
-    // this.getWinnerTiles();
-    // this.tiles = [...this.tilesWin];
-
-    // this.renderTiles();
-
-    // this.startGameBtn.addEventListener('click', this.beginGame);
   }
 
   beginGame() {
     this.gameWon = false;
+    this.countMove = 0;
     this.boardGame.classList.remove('before-start');
-    // this.tilesWin = [];
     this.tiles = [...this.tilesWin];
     this.shuffle();
     this.renderTiles();
@@ -114,7 +131,6 @@ class Game {
     });
 
     this.boardGame.addEventListener('click', this.moveToEmpty);
-    localStorage.setItem('tiles', JSON.stringify(this.tiles));
   }
 
   moveToEmpty(e) {
@@ -122,8 +138,8 @@ class Game {
     // if (this.tiles.length !== this.boardSize) return;
     const tileClicked = e.target;
     if (tileClicked.classList.contains('empty')) return;
+    this.restoreGameBtn.classList.add('hide');
     const tileToMove = this.tiles.findIndex((item) => item === Number(tileClicked.dataset.key));
-    console.log(tileToMove);
     if ((this.tiles[tileToMove - 1] === '') && (tileToMove % this.size !== 0)) {
       const bingo = this.tiles[tileToMove - 1];
       this.tiles[tileToMove - 1] = this.tiles[tileToMove];
@@ -144,9 +160,20 @@ class Game {
       this.tiles[tileToMove + this.size] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
     }
-
-    this.renderTiles(this.tiles);
+     this.renderTiles(this.tiles);
     this.checkTheEndOfGame();
+
+    this.countMove++;
+    this.saveGameBtn.classList.remove('hide');
+    this.saveGameBtn.addEventListener('click', this.saveGame);
+  }
+
+  saveGame() {
+    console.log(this.tiles);
+    localStorage.setItem('tiles', JSON.stringify(this.tiles));
+    // this.renderBoard();
+    // this.renderTiles();
+    this.boardGame.addEventListener('click', this.moveToEmpty);
   }
 
   checkTheEndOfGame() {
@@ -157,7 +184,7 @@ class Game {
     if (JSON.stringify(tilesEmptyRemove) === JSON.stringify(this.tilesWin)) {
       this.gameWon = true;
       this.boardGame.classList.add('before-start');
-      setTimeout(() => alert('You Win!'), 0);
+      setTimeout(() => alert(`You Win! Your moves: ${this.countMove}`), 0);
     }
   }
 }

@@ -23,27 +23,22 @@ h1{
   margin: 0 auto;
   text-align: center;
 }
-button {
+.button {
   font-size: 19px;
   font-weight: bold ;
   margin: 20px;
-  margin-right: 100px;
+  margin-right: 20px;
   padding: 10px;
   border: 3px solid rgb(238, 75, 11);
   border-radius: 10px;
   width: 200px;
   cursor: pointer;
 } 
-select{
-  font-size: 19px;
-  font-weight: bold ;
-  width: 200px;
-  border: 3px solid rgb(238, 75, 11);
-  border-radius: 10px;
-  margin: 20px;
-  padding: 10px;
-  cursor: pointer;
+
+.hide {
+  display: none;
 }
+
 option {
   font-size: 19px;
   font-weight: bold ;
