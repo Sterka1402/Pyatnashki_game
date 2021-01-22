@@ -3,15 +3,15 @@ import Tile from './tiles';
 class Game {
   constructor() {
     this.tilesWin = [];
-    
+    this.size = 4;
     this.gameWon = false;
 
     this.bindMethods();
   }
 
   bindMethods() {
-    this.init = this.init.bind(this);
     this.createButtons = this.createButtons.bind(this);
+    this.renderBoard = this.renderBoard.bind(this);
     this.getWinnerTiles = this.getWinnerTiles.bind(this);
     this.renderTiles = this.renderTiles.bind(this);
     this.beginGame = this.beginGame.bind(this);
@@ -28,7 +28,7 @@ class Game {
   }
 
   createButtons() {
-    this.gameContainer = document.querySelector('.game-begin');
+   
     this.startGameBtn = document.createElement('BUTTON');
     this.startGameBtn.innerHTML = 'Start new Game';
     this.startGameBtn.classList.add('start-game');
@@ -45,49 +45,51 @@ class Game {
 
   getSizeGame(e) {
     const { value } = e.target;
-    if (value === '3') {
-      this.size = 3;
-      this.boardSizeClass = 'board-size-3';
-    }
-    if (value === '4') {
-      this.size = 4;
-      this.boardSizeClass = 'board-size-4';
-    }
-    if (value === '5') {
-      this.size = 5;
-      this.boardSizeClass = 'board-size-5';
-    }    
-    // console.log(this.size);
-    return this.size;
+      this.size = Number(value);
+      this.renderBoard();
   }
 
-  init() {
-    this.createButtons();
-    this.boardSizeClass = 'board-size-3';
+  renderBoard() {
+    this.gameContainer.innerHTML = '';
+    this.boardSizeClass = `board, size${this.size}`;
     this.boardGame = document.createElement('DIV');
-    this.boardGame.classList.add(`${this.boardSizeClass}`, 'before-start');
+    this.boardGame.classList.add('board',`size${this.size}`, 'before-start');
     this.gameContainer.append(this.startGameBtn, this.selectSizeGame, this.boardGame);
+    this.selectSizeGame.addEventListener('change', this.getSizeGame);
 
-    
-    this.size = this.selectSizeGame.addEventListener('change', this.getSizeGame) || 3;
-    console.log(this.size);
-    // this.size = (a) ? a : 4;
-    // this.size;
-    
-
-    this.boardSize = this.size * this.size;
-    console.log(this.boardSize);
+    this.boardSize = Math.pow(this.size, 2);
+    this.tilesWin = [];
     this.getWinnerTiles();
+    
     this.tiles = [...this.tilesWin];
 
     this.renderTiles();
 
     this.startGameBtn.addEventListener('click', this.beginGame);
+
+  }
+
+  init() {
+    this.gameContainer = document.querySelector('.game-begin');
+    this.createButtons();
+    this.renderBoard();
+    
+    console.log(this.size);
+    
+    // this.boardSize = Math.pow(this.size, 2);
+    // this.tilesWin = [];
+    // this.getWinnerTiles();
+    // this.tiles = [...this.tilesWin];
+
+    // this.renderTiles();
+
+    // this.startGameBtn.addEventListener('click', this.beginGame);
   }
 
   beginGame() {
     this.gameWon = false;
     this.boardGame.classList.remove('before-start');
+    // this.tilesWin = [];
     this.tiles = [...this.tilesWin];
     this.shuffle();
     this.renderTiles();
@@ -117,11 +119,11 @@ class Game {
 
   moveToEmpty(e) {
     if ( this.gameWon === true) return;
-    if (this.tiles.length !== this.boardSize) return;
+    // if (this.tiles.length !== this.boardSize) return;
     const tileClicked = e.target;
     if (tileClicked.classList.contains('empty')) return;
     const tileToMove = this.tiles.findIndex((item) => item === Number(tileClicked.dataset.key));
-
+    console.log(tileToMove);
     if ((this.tiles[tileToMove - 1] === '') && (tileToMove % this.size !== 0)) {
       const bingo = this.tiles[tileToMove - 1];
       this.tiles[tileToMove - 1] = this.tiles[tileToMove];
@@ -132,7 +134,7 @@ class Game {
       this.tiles[tileToMove + 1] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
     }
-    if (this.tiles[tileToMove - this.size] === '') {
+    if (this.tiles[tileToMove - +this.size] === '') {
       const bingo = this.tiles[tileToMove - this.size];
       this.tiles[tileToMove - this.size] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
