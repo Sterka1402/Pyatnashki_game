@@ -138,6 +138,7 @@ class Game {
     if (this.gameWon === true) return;
     const tileClicked = e.target;
     if (tileClicked.classList.contains('empty')) return;
+    if (!tileClicked.classList.contains('tiles')) return;
     this.restoreGameBtn.classList.add('hide');
     const tileToMove = this.tiles.findIndex((item) => item === Number(tileClicked.dataset.key));
     if ((this.tiles[tileToMove - 1] === '') && (tileToMove % this.size !== 0)) {
