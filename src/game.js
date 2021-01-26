@@ -16,14 +16,13 @@ class Game {
     this.getSizeGame = this.getSizeGame.bind(this);
     this.renderBoard = this.renderBoard.bind(this);
     this.getWinnerTiles = this.getWinnerTiles.bind(this);
-    this.restoreSaveGame = this.restoreSaveGame.bind(this)
+    this.restoreSaveGame = this.restoreSaveGame.bind(this);
     this.beginGame = this.beginGame.bind(this);
     this.shuffle = this.shuffle.bind(this);
     this.renderTiles = this.renderTiles.bind(this);
     this.moveToEmpty = this.moveToEmpty.bind(this);
     this.saveGame = this.saveGame.bind(this);
     this.checkTheEndOfGame = this.checkTheEndOfGame.bind(this);
-  
   }
 
   getWinnerTiles() {
@@ -56,25 +55,23 @@ class Game {
     this.restoreGameBtn.innerHTML = 'Restore game';
     this.restoreGameBtn.classList.add('button', 'hide');
   }
-  
+
   getSizeGame(e) {
     this.saveGameBtn.classList.add('hide');
     const { value } = e.target;
-      this.size = Number(value);
-      this.renderBoard();
-      this.getWinnerTiles();
-      this.renderTiles();
+    this.size = Number(value);
+    this.renderBoard();
+    this.getWinnerTiles();
+    this.renderTiles();
   }
-  renderButtons() {
 
-  }
   renderBoard() {
     this.gameContainer.innerHTML = '';
-    console.log(this.size);
     this.boardSizeClass = `board, size${this.size}`;
     this.boardGame = document.createElement('DIV');
-    this.boardGame.classList.add('board',`size${this.size}`, 'before-start');
-    this.gameContainer.append(this.startGameBtn, this.selectSizeGame, this.saveGameBtn, this.restoreGameBtn, this.boardGame);
+    this.boardGame.classList.add('board', `size${this.size}`, 'before-start');
+    this.gameContainer.append(this.startGameBtn, this.selectSizeGame, this.saveGameBtn);
+    this.gameContainer.append(this.restoreGameBtn, this.boardGame);
     this.selectSizeGame.addEventListener('change', this.getSizeGame);
 
     this.boardSize = Math.pow(this.size, 2);
@@ -85,26 +82,21 @@ class Game {
 
   checkSaveGame() {
     if (JSON.parse(localStorage.getItem('tiles'))) {
-      this.restoreGameBtn.classList.remove('hide');  
+      this.restoreGameBtn.classList.remove('hide');
     }
-
   }
 
   restoreSaveGame() {
     this.tiles = JSON.parse(localStorage.getItem('tiles'));
-    this.size = Math.sqrt(this.tiles.length);    
-    console.log(Math.sqrt(this.tiles.length));
+    this.size = Math.sqrt(this.tiles.length);
     this.renderBoard();
     this.boardGame.classList.remove('before-start');
     this.renderTiles();
-  
-    // localStorage.removeItem('tiles');
   }
 
   init() {
     this.gameContainer = document.querySelector('.game-begin');
     this.createButtons();
-   
     this.checkSaveGame();
     this.renderBoard();
     this.getWinnerTiles();
@@ -143,7 +135,7 @@ class Game {
   }
 
   moveToEmpty(e) {
-    if ( this.gameWon === true) return;
+    if (this.gameWon === true) return;
     const tileClicked = e.target;
     if (tileClicked.classList.contains('empty')) return;
     this.restoreGameBtn.classList.add('hide');
@@ -156,7 +148,7 @@ class Game {
       const bingo = this.tiles[tileToMove + 1];
       this.tiles[tileToMove + 1] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
-    } else if ((this.tiles[tileToMove - this.size] === '') && ((tileToMove - this.size) % this.size !== 0)){
+    } else if (this.tiles[tileToMove - this.size] === '') {
       const bingo = this.tiles[tileToMove - this.size];
       this.tiles[tileToMove - this.size] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
@@ -165,8 +157,8 @@ class Game {
       this.tiles[tileToMove + +this.size] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
     }
-      this.renderTiles(this.tiles);
-      this.checkTheEndOfGame();
+    this.renderTiles(this.tiles);
+    this.checkTheEndOfGame();
 
     this.countMove++;
     this.saveGameBtn.classList.remove('hide');
@@ -180,7 +172,7 @@ class Game {
   checkTheEndOfGame() {
     const tilesEmptyRemove = [...this.tiles];
     tilesEmptyRemove.pop();
-    if ( this.gameWon === true) return; 
+    if (this.gameWon === true) return;
     if (this.tiles.length !== this.boardSize) return;
     if (JSON.stringify(tilesEmptyRemove) === JSON.stringify(this.tilesWin)) {
       this.gameWon = true;
