@@ -27,9 +27,11 @@ class Game {
   }
 
   getWinnerTiles() {
+    this.tilesWin = [];
     for (let i = 1; i < this.boardSize; i++) {
       this.tilesWin.push(i);
     }
+    this.tiles = [...this.tilesWin];
   }
 
   createButtons() {
@@ -54,15 +56,21 @@ class Game {
     this.restoreGameBtn.innerHTML = 'Restore game';
     this.restoreGameBtn.classList.add('button', 'hide');
   }
-
+  
   getSizeGame(e) {
+    this.saveGameBtn.classList.add('hide');
     const { value } = e.target;
       this.size = Number(value);
       this.renderBoard();
+      this.getWinnerTiles();
+      this.renderTiles();
   }
+  renderButtons() {
 
+  }
   renderBoard() {
     this.gameContainer.innerHTML = '';
+    console.log(this.size);
     this.boardSizeClass = `board, size${this.size}`;
     this.boardGame = document.createElement('DIV');
     this.boardGame.classList.add('board',`size${this.size}`, 'before-start');
@@ -70,11 +78,6 @@ class Game {
     this.selectSizeGame.addEventListener('change', this.getSizeGame);
 
     this.boardSize = Math.pow(this.size, 2);
-    this.tilesWin = [];
-    this.getWinnerTiles();
-    
-    this.tiles = [...this.tilesWin];
-    this.renderTiles();
 
     this.startGameBtn.addEventListener('click', this.beginGame);
     this.restoreGameBtn.addEventListener('click', this.restoreSaveGame);
@@ -89,24 +92,30 @@ class Game {
 
   restoreSaveGame() {
     this.tiles = JSON.parse(localStorage.getItem('tiles'));
-    this.boardGame.classList.remove('before-start');
     this.size = Math.sqrt(this.tiles.length);    
     console.log(Math.sqrt(this.tiles.length));
     this.renderBoard();
+    this.boardGame.classList.remove('before-start');
     this.renderTiles();
+  
+    // localStorage.removeItem('tiles');
   }
 
   init() {
     this.gameContainer = document.querySelector('.game-begin');
     this.createButtons();
+   
     this.checkSaveGame();
     this.renderBoard();
+    this.getWinnerTiles();
+    this.renderTiles();
   }
 
   beginGame() {
     this.gameWon = false;
     this.countMove = 0;
     this.boardGame.classList.remove('before-start');
+    this.getWinnerTiles();
     this.tiles = [...this.tilesWin];
     this.shuffle();
     this.renderTiles();
@@ -135,7 +144,6 @@ class Game {
 
   moveToEmpty(e) {
     if ( this.gameWon === true) return;
-    // if (this.tiles.length !== this.boardSize) return;
     const tileClicked = e.target;
     if (tileClicked.classList.contains('empty')) return;
     this.restoreGameBtn.classList.add('hide');
@@ -144,24 +152,21 @@ class Game {
       const bingo = this.tiles[tileToMove - 1];
       this.tiles[tileToMove - 1] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
-    }
-    if ((this.tiles[tileToMove + 1] === '') && ((tileToMove + 1) % this.size !== 0)) {
+    } else if ((this.tiles[tileToMove + 1] === '') && ((tileToMove + 1) % this.size !== 0)) {
       const bingo = this.tiles[tileToMove + 1];
       this.tiles[tileToMove + 1] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
-    }
-    if (this.tiles[tileToMove - +this.size] === '') {
+    } else if ((this.tiles[tileToMove - this.size] === '') && ((tileToMove - this.size) % this.size !== 0)){
       const bingo = this.tiles[tileToMove - this.size];
       this.tiles[tileToMove - this.size] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
-    }
-    if (this.tiles[tileToMove + this.size] === '') {
-      const bingo = this.tiles[tileToMove + this.size];
-      this.tiles[tileToMove + this.size] = this.tiles[tileToMove];
+    } else if (this.tiles[tileToMove + this.size] === '') {
+      const bingo = this.tiles[tileToMove + +this.size];
+      this.tiles[tileToMove + +this.size] = this.tiles[tileToMove];
       this.tiles[tileToMove] = bingo;
     }
-     this.renderTiles(this.tiles);
-    this.checkTheEndOfGame();
+      this.renderTiles(this.tiles);
+      this.checkTheEndOfGame();
 
     this.countMove++;
     this.saveGameBtn.classList.remove('hide');
@@ -169,11 +174,7 @@ class Game {
   }
 
   saveGame() {
-    console.log(this.tiles);
     localStorage.setItem('tiles', JSON.stringify(this.tiles));
-    // this.renderBoard();
-    // this.renderTiles();
-    this.boardGame.addEventListener('click', this.moveToEmpty);
   }
 
   checkTheEndOfGame() {
