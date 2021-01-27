@@ -23,32 +23,56 @@ h1{
   margin: 0 auto;
   text-align: center;
 }
-button {
-  margin: 20px auto;
-  margin-right: 300px;
+.button {
+  font-size: 19px;
+  font-weight: bold ;
+  margin: 20px;
+  margin-right: 20px;
+  padding: 10px;
   border: 3px solid rgb(238, 75, 11);
   border-radius: 10px;
-  width: 100px;
+  width: 200px;
   cursor: pointer;
 } 
 
-.container {
-  width: 420px;
-  height: 420px;
+.hide {
+  display: none;
+}
+
+option {
+  font-size: 19px;
+  font-weight: bold ;
+}
+.board {
   margin: 50px auto;
   border: 2px solid gray;
   background-color:  rgba(238, 75, 11, 0.8);
   padding-left: 1px;
   display:grid;
-  grid-template-columns: 100px 100px 100px 100px;
   row-gap: 5px;
   column-gap: 5px;
+  cursor: pointer;
+}
+.size4 {
+  width: 420px;
+  height: 420px;
+  grid-template-columns: 100px 100px 100px 100px;
   
-  transition: all 0.2s ease-in-out;
-  -webkit-transition: all 2s ease-in-out; /** Chrome & Safari **/
-  -moz-transition: all 2s ease-in-out; /** Firefox **/
-  -o-transition: all 2s ease-in-out; /** Opera **/
-  
+}
+.size3 {
+  width: 315px;
+  height: 315px;
+  grid-template-columns: 100px 100px 100px;
+}
+.size5 {
+  width: 525px;
+  height: 525px;
+  grid-template-columns: 100px 100px 100px 100px 100px;
+ 
+}
+.before-start{
+  background-color:  rgba(238, 75, 11, 0.3);
+  cursor: initial;
 }
 .tiles {
   font-weight: bold ;
@@ -60,8 +84,7 @@ button {
   display:flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-
+ 
 }
 
 .empty {
